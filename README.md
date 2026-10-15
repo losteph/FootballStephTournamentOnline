@@ -71,6 +71,22 @@ Crea un file chiamato `scheduled.json` all'interno della cartella `data/`:
 
 ---
 
+---
+
+## 🔗 Collegamento con la Fase a Eliminazione Diretta (Playoff)
+Se il tuo torneo prevede una seconda fase a scontro diretto (es. Quarti o Semifinali), puoi collegare questo portale del campionato direttamente al sito della *Knockout Edition*:
+
+1. Carica il sito dei Playoff in una cartella parallela o in un secondo repository (es. `/knockout/`).
+2. Nel file `index.html` della League Edition, subito sotto le sotto-schede di navigazione o nell'intestazione, aggiungi un pulsante di collegamento rapido:
+   ```html
+   <div style="text-align: center; padding: 6px; background: #1E293B;">
+     <a href="../knockout/index.html" style="color: #3B82F6; font-weight: bold; font-size: 12px; text-decoration: none;">
+       🏆 Vai al Tabellone Playoff &rarr;
+     </a>
+   </div>
+
+---
+
 ### 🛠️ Tecnologie Utilizzate
 
 - HTML5 / CSS3 (Design moderno in stile dashboard calcistica)
