@@ -1,0 +1,456 @@
+[
+  {
+    "id": "1792070175372",
+    "title": "Solaris FC vs Vulcania",
+    "date": "15/10/2026 15:16",
+    "homeName": "Solaris FC",
+    "awayName": "Vulcania",
+    "homeScore": 2,
+    "awayScore": 2,
+    "homePenalties": 3,
+    "awayPenalties": 2,
+    "homeColorValue": 4293571336,
+    "awayColorValue": 4293870660,
+    "homeRoster": [
+      {
+        "dbId": "1791223170001",
+        "num": "1",
+        "name": "Matteo R.",
+        "inField": true,
+        "isGK": true,
+        "playedSeconds": 330,
+        "gkPlayedSeconds": 330
+      },
+      {
+        "dbId": "1791223170002",
+        "num": "2",
+        "name": "Davide S.",
+        "inField": true,
+        "isGK": false,
+        "playedSeconds": 330,
+        "gkPlayedSeconds": 0
+      },
+      {
+        "dbId": "1791223170003",
+        "num": "3",
+        "name": "Luca B.",
+        "inField": true,
+        "isGK": false,
+        "playedSeconds": 75,
+        "gkPlayedSeconds": 0
+      },
+      {
+        "dbId": "1791223170004",
+        "num": "8",
+        "name": "Marco V.",
+        "inField": true,
+        "isGK": false,
+        "playedSeconds": 330,
+        "gkPlayedSeconds": 0
+      },
+      {
+        "dbId": "1791223170005",
+        "num": "10",
+        "name": "Lorenzo G.",
+        "inField": true,
+        "isGK": false,
+        "playedSeconds": 330,
+        "gkPlayedSeconds": 0
+      },
+      {
+        "dbId": "1791223170006",
+        "num": "6",
+        "name": "Andrea F.",
+        "inField": false,
+        "isGK": false,
+        "playedSeconds": 0,
+        "gkPlayedSeconds": 0
+      },
+      {
+        "dbId": "1791223170007",
+        "num": "99",
+        "name": "Simone C.",
+        "inField": false,
+        "isGK": false,
+        "playedSeconds": 0,
+        "gkPlayedSeconds": 0
+      }
+    ],
+    "awayRoster": [
+      {
+        "dbId": "1791223170008",
+        "num": "1",
+        "name": "Gabriele M.",
+        "inField": true,
+        "isGK": true,
+        "playedSeconds": 330,
+        "gkPlayedSeconds": 330
+      },
+      {
+        "dbId": "1791223170009",
+        "num": "4",
+        "name": "Federico L.",
+        "inField": true,
+        "isGK": false,
+        "playedSeconds": 330,
+        "gkPlayedSeconds": 0
+      },
+      {
+        "dbId": "1791223170010",
+        "num": "3",
+        "name": "Christian P.",
+        "inField": true,
+        "isGK": false,
+        "playedSeconds": 330,
+        "gkPlayedSeconds": 0
+      },
+      {
+        "dbId": "1791223170011",
+        "num": "10",
+        "name": "Alessio T.",
+        "inField": true,
+        "isGK": false,
+        "playedSeconds": 89,
+        "gkPlayedSeconds": 0
+      },
+      {
+        "dbId": "1791223170012",
+        "num": "9",
+        "name": "Jacopo D.",
+        "inField": true,
+        "isGK": false,
+        "playedSeconds": 330,
+        "gkPlayedSeconds": 0
+      },
+      {
+        "dbId": "1791223170013",
+        "num": "6",
+        "name": "Stefano N.",
+        "inField": false,
+        "isGK": false,
+        "playedSeconds": 241,
+        "gkPlayedSeconds": 0
+      },
+      {
+        "dbId": "1791223170014",
+        "num": "7",
+        "name": "Edoardo Z.",
+        "inField": false,
+        "isGK": false,
+        "playedSeconds": 0,
+        "gkPlayedSeconds": 0
+      }
+    ],
+    "events": [
+      {
+        "id": 1792070165108,
+        "title": "❌ Rigore Sbagliato da #3 Christian P.",
+        "sub": "Squadra: Vulcania",
+        "minute": "RIGORI",
+        "team": "away",
+        "isPenalty": true,
+        "type": "RIGORE_SBAGLIATO",
+        "playerId": "1791223170010",
+        "gkConcededId": null
+      },
+      {
+        "id": 1792070162319,
+        "title": "👟 Rigore Segnato: #2 Davide S.",
+        "sub": "Squadra: Solaris FC",
+        "minute": "RIGORI",
+        "team": "home",
+        "isPenalty": true,
+        "type": "RIGORE_SEGNATO",
+        "playerId": "1791223170002",
+        "gkConcededId": null
+      },
+      {
+        "id": 1792070158573,
+        "title": "👟 Rigore Segnato: #4 Federico L.",
+        "sub": "Squadra: Vulcania",
+        "minute": "RIGORI",
+        "team": "away",
+        "isPenalty": true,
+        "type": "RIGORE_SEGNATO",
+        "playerId": "1791223170009",
+        "gkConcededId": null
+      },
+      {
+        "id": 1792070156320,
+        "title": "👟 Rigore Segnato: #8 Marco V.",
+        "sub": "Squadra: Solaris FC",
+        "minute": "RIGORI",
+        "team": "home",
+        "isPenalty": true,
+        "type": "RIGORE_SEGNATO",
+        "playerId": "1791223170004",
+        "gkConcededId": null
+      },
+      {
+        "id": 1792070153732,
+        "title": "❌ Rigore Sbagliato da #9 Jacopo D.",
+        "sub": "Squadra: Vulcania",
+        "minute": "RIGORI",
+        "team": "away",
+        "isPenalty": true,
+        "type": "RIGORE_SBAGLIATO",
+        "playerId": "1791223170012",
+        "gkConcededId": null
+      },
+      {
+        "id": 1792070150813,
+        "title": "👟 Rigore Segnato: #10 Lorenzo G.",
+        "sub": "Squadra: Solaris FC",
+        "minute": "RIGORI",
+        "team": "home",
+        "isPenalty": true,
+        "type": "RIGORE_SEGNATO",
+        "playerId": "1791223170005",
+        "gkConcededId": null
+      },
+      {
+        "id": 1792070148135,
+        "title": "👟 Rigore Segnato: #6 Stefano N.",
+        "sub": "Squadra: Vulcania",
+        "minute": "RIGORI",
+        "team": "away",
+        "isPenalty": true,
+        "type": "RIGORE_SEGNATO",
+        "playerId": "1791223170013",
+        "gkConcededId": null
+      },
+      {
+        "id": 1792070144054,
+        "title": "⏱️ Inizio Rigori",
+        "sub": "Comunicazione ufficiale",
+        "minute": "RIGORI",
+        "team": null,
+        "isPenalty": false,
+        "type": "OTHER",
+        "playerId": null,
+        "gkConcededId": null
+      },
+      {
+        "id": 1792070122837,
+        "title": "✨ Buona Giocata di #6 Stefano N.",
+        "sub": "Squadra: Vulcania",
+        "minute": "2°TS 01:36",
+        "team": "away",
+        "isPenalty": false,
+        "type": "BUONA_GIOCATA",
+        "playerId": "1791223170013",
+        "gkConcededId": null
+      },
+      {
+        "id": 1792070026681,
+        "title": "⏱️ Inizio 2°TS",
+        "sub": "Comunicazione ufficiale",
+        "minute": "2°TS 00:00",
+        "team": null,
+        "isPenalty": false,
+        "type": "OTHER",
+        "playerId": null,
+        "gkConcededId": null
+      },
+      {
+        "id": 1792069996570,
+        "title": "✨ Buona Giocata di #6 Stefano N.",
+        "sub": "Squadra: Vulcania",
+        "minute": "1°TS 00:08",
+        "team": "away",
+        "isPenalty": false,
+        "type": "BUONA_GIOCATA",
+        "playerId": "1791223170013",
+        "gkConcededId": null
+      },
+      {
+        "id": 1792069993525,
+        "title": "🎯 Big Chance Creata da #8 Marco V.",
+        "sub": "Squadra: Solaris FC",
+        "minute": "1°TS 00:05",
+        "team": "home",
+        "isPenalty": false,
+        "type": "BIG_CHANCE_CREATED",
+        "playerId": "1791223170004",
+        "gkConcededId": null
+      },
+      {
+        "id": 1792069987295,
+        "title": "⏱️ Inizio 1°TS",
+        "sub": "Comunicazione ufficiale",
+        "minute": "1°TS 00:00",
+        "team": null,
+        "isPenalty": false,
+        "type": "OTHER",
+        "playerId": null,
+        "gkConcededId": null
+      },
+      {
+        "id": 1792069922640,
+        "title": "⚽ GOL! #10 Lorenzo G.",
+        "sub": "Squadra: Solaris FC",
+        "minute": "2° T 00:04",
+        "team": "home",
+        "isPenalty": false,
+        "type": "GOL",
+        "playerId": "1791223170005",
+        "gkConcededId": "1791223170008"
+      },
+      {
+        "id": 1792069917266,
+        "title": "⏱️ Inizio 2° T",
+        "sub": "Comunicazione ufficiale",
+        "minute": "2° T 00:00",
+        "team": null,
+        "isPenalty": false,
+        "type": "OTHER",
+        "playerId": null,
+        "gkConcededId": null
+      },
+      {
+        "id": 1792069891813,
+        "title": "🔄 Sostituzione",
+        "sub": "Entra #6 Stefano N., Esce #10 Alessio T. (Vulcania)",
+        "minute": "1° T 01:29",
+        "team": "away",
+        "isPenalty": false,
+        "type": "SOSTITUZIONE",
+        "playerId": null,
+        "gkConcededId": null
+      },
+      {
+        "id": 1792069883262,
+        "title": "🧤 Rigore Parato da #1 Matteo R.",
+        "sub": "Squadra: Solaris FC",
+        "minute": "1° T 01:21",
+        "team": "home",
+        "isPenalty": false,
+        "type": "RIGORE_PARATO",
+        "playerId": "1791223170001",
+        "gkConcededId": null
+      },
+      {
+        "id": 1792069880476,
+        "title": "❌ Rigore Sbagliato da #10 Alessio T.",
+        "sub": "Squadra: Vulcania",
+        "minute": "1° T 01:18",
+        "team": "away",
+        "isPenalty": false,
+        "type": "RIGORE_SBAGLIATO",
+        "playerId": "1791223170011",
+        "gkConcededId": null
+      },
+      {
+        "id": 1792069874282,
+        "title": "🟥 Espulsione: #3 Luca B.",
+        "sub": "Squadra: Solaris FC",
+        "minute": "1° T 01:12",
+        "team": "home",
+        "isPenalty": false,
+        "type": "ROSSO",
+        "playerId": "1791223170003",
+        "gkConcededId": null
+      },
+      {
+        "id": 1792069862883,
+        "title": "⭕ AUTOGOL! #2 Davide S.",
+        "sub": "A favore avversario (Autore: Solaris FC)",
+        "minute": "1° T 01:01",
+        "team": "away",
+        "isPenalty": false,
+        "type": "AUTOGOL",
+        "playerId": "1791223170002",
+        "gkConcededId": null
+      },
+      {
+        "id": 1792069854511,
+        "title": "🤦 Big Chance Missed da #8 Marco V.",
+        "sub": "Squadra: Solaris FC",
+        "minute": "1° T 00:52",
+        "team": "home",
+        "isPenalty": false,
+        "type": "BIG_CHANCE_MISSED",
+        "playerId": "1791223170004",
+        "gkConcededId": null
+      },
+      {
+        "id": 1792069850118,
+        "title": "📉 Palla persa / Errore di #9 Jacopo D.",
+        "sub": "Squadra: Vulcania",
+        "minute": "1° T 00:48",
+        "team": "away",
+        "isPenalty": false,
+        "type": "ERRORE",
+        "playerId": "1791223170012",
+        "gkConcededId": null
+      },
+      {
+        "id": 1792069847403,
+        "title": "✨ Buona Giocata di #10 Alessio T.",
+        "sub": "Squadra: Vulcania",
+        "minute": "1° T 00:45",
+        "team": "away",
+        "isPenalty": false,
+        "type": "BUONA_GIOCATA",
+        "playerId": "1791223170011",
+        "gkConcededId": null
+      },
+      {
+        "id": 1792069844248,
+        "title": "🎯 Big Chance Creata da #2 Davide S.",
+        "sub": "Squadra: Solaris FC",
+        "minute": "1° T 00:42",
+        "team": "home",
+        "isPenalty": false,
+        "type": "BIG_CHANCE_CREATED",
+        "playerId": "1791223170002",
+        "gkConcededId": null
+      },
+      {
+        "id": 1792069834508,
+        "title": "⚽ GOL! #4 Federico L.",
+        "sub": "Squadra: Vulcania • 🅰 Assist: #3 Christian P.",
+        "minute": "1° T 00:32",
+        "team": "away",
+        "isPenalty": false,
+        "type": "GOL",
+        "playerId": "1791223170009",
+        "gkConcededId": "1791223170001"
+      },
+      {
+        "id": 1792069826646,
+        "title": "🟨 Ammonizione: #9 Jacopo D.",
+        "sub": "Squadra: Vulcania",
+        "minute": "1° T 00:24",
+        "team": "away",
+        "isPenalty": false,
+        "type": "GIALLO",
+        "playerId": "1791223170012",
+        "gkConcededId": null
+      },
+      {
+        "id": 1792069821189,
+        "title": "⚠️ Fallo di #10 Alessio T.",
+        "sub": "Squadra: Vulcania",
+        "minute": "1° T 00:19",
+        "team": "away",
+        "isPenalty": false,
+        "type": "FALLO",
+        "playerId": "1791223170011",
+        "gkConcededId": null
+      },
+      {
+        "id": 1792069813038,
+        "title": "⚽ GOL! #10 Lorenzo G.",
+        "sub": "Squadra: Solaris FC",
+        "minute": "1° T 00:11",
+        "team": "home",
+        "isPenalty": false,
+        "type": "GOL",
+        "playerId": "1791223170005",
+        "gkConcededId": "1791223170008"
+      }
+    ],
+    "tournamentId": "tour_1792069788982"
+  }
+]

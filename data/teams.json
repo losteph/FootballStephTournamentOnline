@@ -1,0 +1,86 @@
+[
+  {
+    "id": "1792064090001",
+    "name": "Solaris FC",
+    "colorValue": 4293571336,
+    "roster": [
+      { "playerId": "1791223170001", "isStarter": true, "customNum": "1" },
+      { "playerId": "1791223170002", "isStarter": true, "customNum": null },
+      { "playerId": "1791223170003", "isStarter": true, "customNum": null },
+      { "playerId": "1791223170004", "isStarter": true, "customNum": "8" },
+      { "playerId": "1791223170005", "isStarter": true, "customNum": "10" },
+      { "playerId": "1791223170006", "isStarter": false, "customNum": null },
+      { "playerId": "1791223170007", "isStarter": false, "customNum": "99" }
+    ]
+  },
+  {
+    "id": "1792064090002",
+    "name": "Vulcania",
+    "colorValue": 4293870660,
+    "roster": [
+      { "playerId": "1791223170008", "isStarter": true, "customNum": null },
+      { "playerId": "1791223170009", "isStarter": true, "customNum": "4" },
+      { "playerId": "1791223170010", "isStarter": true, "customNum": null },
+      { "playerId": "1791223170011", "isStarter": true, "customNum": "10" },
+      { "playerId": "1791223170012", "isStarter": true, "customNum": "9" },
+      { "playerId": "1791223170013", "isStarter": false, "customNum": null },
+      { "playerId": "1791223170014", "isStarter": false, "customNum": null }
+    ]
+  },
+  {
+    "id": "1792064090003",
+    "name": "Oceanic Blu",
+    "colorValue": 4282090230,
+    "roster": [
+      { "playerId": "1791223170015", "isStarter": true, "customNum": "1" },
+      { "playerId": "1791223170016", "isStarter": true, "customNum": "6" },
+      { "playerId": "1791223170017", "isStarter": true, "customNum": null },
+      { "playerId": "1791223170018", "isStarter": true, "customNum": "8" },
+      { "playerId": "1791223170019", "isStarter": true, "customNum": "11" },
+      { "playerId": "1791223170020", "isStarter": false, "customNum": null },
+      { "playerId": "1791223170021", "isStarter": false, "customNum": null }
+    ]
+  },
+  {
+    "id": "1792064090004",
+    "name": "Real Bianco",
+    "colorValue": 4294507260,
+    "roster": [
+      { "playerId": "1791223170022", "isStarter": true, "customNum": null },
+      { "playerId": "1791223170023", "isStarter": true, "customNum": null },
+      { "playerId": "1791223170024", "isStarter": true, "customNum": null },
+      { "playerId": "1791223170025", "isStarter": true, "customNum": "21" },
+      { "playerId": "1791223170026", "isStarter": true, "customNum": "9" },
+      { "playerId": "1791223170027", "isStarter": false, "customNum": null },
+      { "playerId": "1791223170028", "isStarter": false, "customNum": null }
+    ]
+  },
+  {
+    "id": "1792064090005",
+    "name": "Aura Viola",
+    "colorValue": 4287323894,
+    "roster": [
+      { "playerId": "1791223170029", "isStarter": true, "customNum": "1" },
+      { "playerId": "1791223170030", "isStarter": true, "customNum": null },
+      { "playerId": "1791223170031", "isStarter": true, "customNum": null },
+      { "playerId": "1791223170032", "isStarter": true, "customNum": "7" },
+      { "playerId": "1791223170033", "isStarter": true, "customNum": "10" },
+      { "playerId": "1791223170034", "isStarter": false, "customNum": null },
+      { "playerId": "1791223170035", "isStarter": false, "customNum": null }
+    ]
+  },
+  {
+    "id": "1792064090006",
+    "name": "Smeraldo FC",
+    "colorValue": 4279286145,
+    "roster": [
+      { "playerId": "1791223170036", "isStarter": true, "customNum": "12" },
+      { "playerId": "1791223170037", "isStarter": true, "customNum": "3" },
+      { "playerId": "1791223170038", "isStarter": true, "customNum": null },
+      { "playerId": "1791223170039", "isStarter": true, "customNum": "8" },
+      { "playerId": "1791223170040", "isStarter": true, "customNum": "10" },
+      { "playerId": "1791223170041", "isStarter": false, "customNum": null },
+      { "playerId": "1791223170042", "isStarter": false, "customNum": null }
+    ]
+  }
+]

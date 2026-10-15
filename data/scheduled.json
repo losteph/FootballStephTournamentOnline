@@ -1,0 +1,266 @@
+{
+  "tournamentId": "tour_1792069788982",
+  "tournamentName": "YOUNG CUP 2026",
+  "rounds": [
+    {
+      "roundName": "1ª Giornata - Andata",
+      "matches": [
+        {
+          "homeName": "Solaris FC",
+          "awayName": "Vulcania",
+          "scheduledDate": "Lunedì 12/10/2026 - Ore 21:00",
+          "locationName": "Centro Sportivo Lambrate - Campo 1",
+          "mapsUrl": "https://maps.google.com"
+        },
+        {
+          "homeName": "Oceanic Blu",
+          "awayName": "Real Bianco",
+          "scheduledDate": "Martedì 13/10/2026 - Ore 21:00",
+          "locationName": "Sporting Club San Siro - Campo A",
+          "mapsUrl": "https://maps.google.com"
+        },
+        {
+          "homeName": "Aura Viola",
+          "awayName": "Smeraldo FC",
+          "scheduledDate": "Mercoledì 14/10/2026 - Ore 21:30",
+          "locationName": "Centro Sportivo Lambrate - Campo 2",
+          "mapsUrl": "https://maps.google.com"
+        }
+      ]
+    },
+    {
+      "roundName": "2ª Giornata - Andata",
+      "matches": [
+        {
+          "homeName": "Real Bianco",
+          "awayName": "Solaris FC",
+          "scheduledDate": "Lunedì 19/10/2026 - Ore 21:00",
+          "locationName": "Centro Sportivo Lambrate - Campo 1",
+          "mapsUrl": "https://maps.google.com"
+        },
+        {
+          "homeName": "Vulcania",
+          "awayName": "Smeraldo FC",
+          "scheduledDate": "Martedì 20/10/2026 - Ore 21:00",
+          "locationName": "Sporting Club San Siro - Campo A",
+          "mapsUrl": "https://maps.google.com"
+        },
+        {
+          "homeName": "Aura Viola",
+          "awayName": "Oceanic Blu",
+          "scheduledDate": "Mercoledì 21/10/2026 - Ore 21:30",
+          "locationName": "Centro Sportivo Lambrate - Campo 2",
+          "mapsUrl": "https://maps.google.com"
+        }
+      ]
+    },
+    {
+      "roundName": "3ª Giornata - Andata",
+      "matches": [
+        {
+          "homeName": "Solaris FC",
+          "awayName": "Aura Viola",
+          "scheduledDate": "Lunedì 26/10/2026 - Ore 21:00",
+          "locationName": "Centro Sportivo Lambrate - Campo 1",
+          "mapsUrl": "https://maps.google.com"
+        },
+        {
+          "homeName": "Smeraldo FC",
+          "awayName": "Real Bianco",
+          "scheduledDate": "Martedì 27/10/2026 - Ore 21:00",
+          "locationName": "Sporting Club San Siro - Campo A",
+          "mapsUrl": "https://maps.google.com"
+        },
+        {
+          "homeName": "Oceanic Blu",
+          "awayName": "Vulcania",
+          "scheduledDate": "Mercoledì 28/10/2026 - Ore 21:30",
+          "locationName": "Centro Sportivo Lambrate - Campo 2",
+          "mapsUrl": "https://maps.google.com"
+        }
+      ]
+    },
+    {
+      "roundName": "4ª Giornata - Andata",
+      "matches": [
+        {
+          "homeName": "Oceanic Blu",
+          "awayName": "Solaris FC",
+          "scheduledDate": "Lunedì 02/11/2026 - Ore 21:00",
+          "locationName": "Centro Sportivo Lambrate - Campo 1",
+          "mapsUrl": "https://maps.google.com"
+        },
+        {
+          "homeName": "Vulcania",
+          "awayName": "Real Bianco",
+          "scheduledDate": "Martedì 03/11/2026 - Ore 21:00",
+          "locationName": "Sporting Club San Siro - Campo A",
+          "mapsUrl": "https://maps.google.com"
+        },
+        {
+          "homeName": "Smeraldo FC",
+          "awayName": "Aura Viola",
+          "scheduledDate": "Mercoledì 04/11/2026 - Ore 21:30",
+          "locationName": "Centro Sportivo Lambrate - Campo 2",
+          "mapsUrl": "https://maps.google.com"
+        }
+      ]
+    },
+    {
+      "roundName": "5ª Giornata - Andata",
+      "matches": [
+        {
+          "homeName": "Solaris FC",
+          "awayName": "Smeraldo FC",
+          "scheduledDate": "Lunedì 09/11/2026 - Ore 21:00",
+          "locationName": "Centro Sportivo Lambrate - Campo 1",
+          "mapsUrl": "https://maps.google.com"
+        },
+        {
+          "homeName": "Real Bianco",
+          "awayName": "Aura Viola",
+          "scheduledDate": "Martedì 10/11/2026 - Ore 21:00",
+          "locationName": "Sporting Club San Siro - Campo A",
+          "mapsUrl": "https://maps.google.com"
+        },
+        {
+          "homeName": "Vulcania",
+          "awayName": "Oceanic Blu",
+          "scheduledDate": "Mercoledì 11/11/2026 - Ore 21:30",
+          "locationName": "Centro Sportivo Lambrate - Campo 2",
+          "mapsUrl": "https://maps.google.com"
+        }
+      ]
+    },
+    {
+      "roundName": "6ª Giornata - Ritorno",
+      "matches": [
+        {
+          "homeName": "Vulcania",
+          "awayName": "Solaris FC",
+          "scheduledDate": "Lunedì 16/11/2026 - Ore 21:00",
+          "locationName": "Centro Sportivo Lambrate - Campo 1",
+          "mapsUrl": "https://maps.google.com"
+        },
+        {
+          "homeName": "Real Bianco",
+          "awayName": "Oceanic Blu",
+          "scheduledDate": "Martedì 17/11/2026 - Ore 21:00",
+          "locationName": "Sporting Club San Siro - Campo A",
+          "mapsUrl": "https://maps.google.com"
+        },
+        {
+          "homeName": "Smeraldo FC",
+          "awayName": "Aura Viola",
+          "scheduledDate": "Mercoledì 18/11/2026 - Ore 21:30",
+          "locationName": "Centro Sportivo Lambrate - Campo 2",
+          "mapsUrl": "https://maps.google.com"
+        }
+      ]
+    },
+    {
+      "roundName": "7ª Giornata - Ritorno",
+      "matches": [
+        {
+          "homeName": "Solaris FC",
+          "awayName": "Real Bianco",
+          "scheduledDate": "Lunedì 23/11/2026 - Ore 21:00",
+          "locationName": "Centro Sportivo Lambrate - Campo 1",
+          "mapsUrl": "https://maps.google.com"
+        },
+        {
+          "homeName": "Smeraldo FC",
+          "awayName": "Vulcania",
+          "scheduledDate": "Martedì 24/11/2026 - Ore 21:00",
+          "locationName": "Sporting Club San Siro - Campo A",
+          "mapsUrl": "https://maps.google.com"
+        },
+        {
+          "homeName": "Oceanic Blu",
+          "awayName": "Aura Viola",
+          "scheduledDate": "Mercoledì 25/11/2026 - Ore 21:30",
+          "locationName": "Centro Sportivo Lambrate - Campo 2",
+          "mapsUrl": "https://maps.google.com"
+        }
+      ]
+    },
+    {
+      "roundName": "8ª Giornata - Ritorno",
+      "matches": [
+        {
+          "homeName": "Aura Viola",
+          "awayName": "Solaris FC",
+          "scheduledDate": "Lunedì 30/11/2026 - Ore 21:00",
+          "locationName": "Centro Sportivo Lambrate - Campo 1",
+          "mapsUrl": "https://maps.google.com"
+        },
+        {
+          "homeName": "Real Bianco",
+          "awayName": "Smeraldo FC",
+          "scheduledDate": "Martedì 01/12/2026 - Ore 21:00",
+          "locationName": "Sporting Club San Siro - Campo A",
+          "mapsUrl": "https://maps.google.com"
+        },
+        {
+          "homeName": "Vulcania",
+          "awayName": "Oceanic Blu",
+          "scheduledDate": "Mercoledì 02/12/2026 - Ore 21:30",
+          "locationName": "Centro Sportivo Lambrate - Campo 2",
+          "mapsUrl": "https://maps.google.com"
+        }
+      ]
+    },
+    {
+      "roundName": "9ª Giornata - Ritorno",
+      "matches": [
+        {
+          "homeName": "Solaris FC",
+          "awayName": "Oceanic Blu",
+          "scheduledDate": "Lunedì 07/12/2026 - Ore 21:00",
+          "locationName": "Centro Sportivo Lambrate - Campo 1",
+          "mapsUrl": "https://maps.google.com"
+        },
+        {
+          "homeName": "Real Bianco",
+          "awayName": "Vulcania",
+          "scheduledDate": "Martedì 08/12/2026 - Ore 21:00",
+          "locationName": "Sporting Club San Siro - Campo A",
+          "mapsUrl": "https://maps.google.com"
+        },
+        {
+          "homeName": "Aura Viola",
+          "awayName": "Smeraldo FC",
+          "scheduledDate": "Mercoledì 09/12/2026 - Ore 21:30",
+          "locationName": "Centro Sportivo Lambrate - Campo 2",
+          "mapsUrl": "https://maps.google.com"
+        }
+      ]
+    },
+    {
+      "roundName": "10ª Giornata - Ritorno",
+      "matches": [
+        {
+          "homeName": "Smeraldo FC",
+          "awayName": "Solaris FC",
+          "scheduledDate": "Lunedì 14/12/2026 - Ore 21:00",
+          "locationName": "Centro Sportivo Lambrate - Campo 1",
+          "mapsUrl": "https://maps.google.com"
+        },
+        {
+          "homeName": "Aura Viola",
+          "awayName": "Real Bianco",
+          "scheduledDate": "Martedì 15/12/2026 - Ore 21:00",
+          "locationName": "Sporting Club San Siro - Campo A",
+          "mapsUrl": "https://maps.google.com"
+        },
+        {
+          "homeName": "Oceanic Blu",
+          "awayName": "Vulcania",
+          "scheduledDate": "Mercoledì 16/12/2026 - Ore 21:30",
+          "locationName": "Centro Sportivo Lambrate - Campo 2",
+          "mapsUrl": "https://maps.google.com"
+        }
+      ]
+    }
+  ]
+}
