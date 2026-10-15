@@ -989,13 +989,15 @@ function openPlayerModal(player, teamName) {
       x => String(x.dbId) === String(player.id)
     );
     if (inMatch) {
-      presenze++;
       const { ratings, mvpId } = calculateMatchRatings(m);
-      if (String(mvpId) === String(player.id)) mvpCount++;
       const v = ratings[String(player.id)];
+
+      // Conta la presenza SOLO se il giocatore ha preso voto numerico (NON è "SV")
       if (typeof v === "number") {
+        presenze++;
         sumVoti += v;
         countVoti++;
+        if (String(mvpId) === String(player.id)) mvpCount++;
       }
     }
 
