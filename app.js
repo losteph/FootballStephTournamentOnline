@@ -10,9 +10,9 @@ let currentTournamentId = null;
 
 // Scala conversione voti in lettere -> valore numerico OVR
 const GRADE_VALUES = {
-  "A+": 99, "A": 93, "A-": 86,
-  "B+": 83, "B": 77, "B-": 73,
-  "C+": 66, "C": 64, "C-": 55
+  "A+": 99, "A": 92, "A-": 87,
+  "B+": 82, "B": 77, "B-": 72,
+  "C+": 67, "C": 62, "C-": 55
 };
 
 // Pesi specifici per calcolo OVR in base al ruolo
