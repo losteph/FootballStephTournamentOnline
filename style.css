@@ -612,3 +612,144 @@ body {
   justify-content: space-between;
   font-size: 12px;
 }
+
+
+/* --- STILI EXTRA KNOCKOUT & BRACKET --- */
+.champion-banner {
+  background: linear-gradient(135deg, rgba(234, 179, 8, 0.22), rgba(16, 185, 129, 0.12));
+  border: 2px solid #EAB308;
+  border-radius: 16px;
+  padding: 18px 16px;
+  text-align: center;
+  margin-bottom: 22px;
+  box-shadow: 0 8px 25px rgba(234, 179, 8, 0.15);
+}
+
+.champion-banner .trophy-icon {
+  font-size: 36px;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.champion-banner .champ-label {
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  color: #EAB308;
+  text-transform: uppercase;
+}
+
+.champion-banner .champ-team {
+  font-size: 22px;
+  font-weight: 900;
+  color: #FFFFFF;
+  margin-top: 4px;
+}
+
+.match-card.final-match-card {
+  border: 1.5px solid rgba(234, 179, 8, 0.65);
+  background: linear-gradient(180deg, #111827 0%, #171E2E 100%);
+}
+
+.round-badge.final-badge {
+  background: rgba(234, 179, 8, 0.18);
+  color: #EAB308;
+  border-color: rgba(234, 179, 8, 0.45);
+}
+
+.team-Eliminated {
+  opacity: 0.42;
+}
+
+.team-Qualified {
+  color: #FFFFFF;
+  font-weight: 900;
+}
+
+.qual-crown {
+  font-size: 12px;
+  margin: 0 3px;
+}
+
+.tbd-team {
+  color: #64748B;
+  font-style: italic;
+  font-weight: 700;
+}
+
+.card-table {
+  background: #111827;
+  border: 1px solid #1E293B;
+  border-radius: 14px;
+  overflow-x: auto;
+}
+
+.steph-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+  font-size: 13px;
+}
+
+.steph-table thead {
+  background: #1E293B;
+  color: #94A3B8;
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.steph-table th,
+.steph-table td {
+  padding: 12px 10px;
+  border-bottom: 1px solid #1E293B;
+}
+
+.steph-table .col-pos { width: 45px; color: #94A3B8; font-weight: 800; }
+.steph-table .col-team { text-align: left; }
+.steph-table .col-pt { width: 55px; color: #10B981; font-weight: 900; font-size: 15px; }
+.steph-table .col-ass { width: 55px; color: #3B82F6; font-weight: 900; font-size: 15px; }
+
+/* --- STILI SEMIFINALI (BLU) E FINALINA 3/4 POSTO (ROSSO) --- */
+.round-badge.semi-badge {
+  background: rgba(59, 130, 246, 0.18);
+  color: #3B82F6;
+  border: 1px solid rgba(59, 130, 246, 0.45);
+}
+
+.match-card.semi-match-card {
+  border: 1.5px solid rgba(59, 130, 246, 0.55);
+}
+
+.round-badge.third-badge {
+  background: rgba(239, 68, 68, 0.18);
+  color: #EF4444;
+  border: 1px solid rgba(239, 68, 68, 0.45);
+}
+
+.match-card.third-match-card {
+  border: 1.5px solid rgba(239, 68, 68, 0.55);
+}
+
+/* DIVISORE PANCHINA NEL TABELLINO */
+.bench-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 10px 0 6px 0;
+  color: var(--text-muted);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+.bench-divider::before,
+.bench-divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.bench-divider span {
+  padding: 0 8px;
+}
