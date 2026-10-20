@@ -1,19 +1,21 @@
 // ============================================================
-// FOOTBALL STEPH - MOTORE KNOCKOUT AUTO-AVANZAMENTO (app.js)
+// FOOTBALL STEPH - MOTORE PORTALE TORNEO (app.js)
 // ============================================================
 
-let scheduleData = { stages: [] };
+let scheduleData = { rounds: [] };
 let matchesData = [];
 let teamsData = [];
 let playersData = [];
 let currentTournamentId = null;
 
+// Scala conversione voti in lettere -> valore numerico OVR
 const GRADE_VALUES = {
   "A+": 99, "A": 92, "A-": 87,
   "B+": 82, "B": 77, "B-": 72,
   "C+": 67, "C": 62, "C-": 55
 };
 
+// Pesi specifici per calcolo OVR in base al ruolo
 const ROLE_WEIGHTS = {
   POR: { tuf: 0.22, rif: 0.22, pia: 0.20, pre: 0.16, rin: 0.10, vel: 0.10 },
   DIF: { dif: 0.35, fis: 0.25, vel: 0.15, pas: 0.12, dri: 0.08, tir: 0.05 },
@@ -22,27 +24,38 @@ const ROLE_WEIGHTS = {
 };
 
 const STAT_LABELS_POR = [
-  { id: "tuf", label: "TUF" }, { id: "pre", label: "PRE" },
-  { id: "rin", label: "RIN" }, { id: "rif", label: "RIF" },
-  { id: "vel", label: "VEL" }, { id: "pia", label: "PIA" }
+  { id: "tuf", label: "TUF" },
+  { id: "pre", label: "PRE" },
+  { id: "rin", label: "RIN" },
+  { id: "rif", label: "RIF" },
+  { id: "vel", label: "VEL" },
+  { id: "pia", label: "PIA" }
 ];
 
 const STAT_LABELS_MOV = [
-  { id: "vel", label: "VEL" }, { id: "tir", label: "TIR" },
-  { id: "pas", label: "PAS" }, { id: "dri", label: "DRI" },
-  { id: "dif", label: "DIF" }, { id: "fis", label: "FIS" }
+  { id: "vel", label: "VEL" },
+  { id: "tir", label: "TIR" },
+  { id: "pas", label: "PAS" },
+  { id: "dri", label: "DRI" },
+  { id: "dif", label: "DIF" },
+  { id: "fis", label: "FIS" }
 ];
 
 async function fetchFirstAvailable(paths) {
   for (const path of paths) {
     try {
       const res = await fetch(path);
-      if (res.ok) return await res.json();
+      if (res.ok) {
+        return await res.json();
+      }
     } catch (_) {}
   }
   return null;
 }
 
+// ============================================================
+// INIZIALIZZAZIONE (SINGOLO TORNEO DA SCHEDULED.JSON)
+// ============================================================
 document.addEventListener("DOMContentLoaded", async () => {
   setupMainTabs();
 
@@ -54,14 +67,16 @@ document.addEventListener("DOMContentLoaded", async () => {
       fetchFirstAvailable(["data/player.json", "data/players.json", "data/database_giocatori.json", "data/database_youngCup.json"])
     ]);
 
-    scheduleData = sched || { stages: [] };
+    scheduleData = sched || { rounds: [] };
     matchesData = Array.isArray(matches) ? matches : [];
     teamsData = Array.isArray(teams) ? teams : [];
     playersData = Array.isArray(players) ? players : [];
 
+    // Nasconde sempre eventuale selettore tornei nell'HTML
     const wrapper = document.getElementById("tournament-selector-wrapper");
     if (wrapper) wrapper.style.display = "none";
 
+    // L'ID del torneo pubblico viene comandato da scheduled.json
     if (scheduleData && scheduleData.tournamentId && scheduleData.tournamentId.trim() !== "") {
       currentTournamentId = scheduleData.tournamentId.trim();
     } else {
@@ -73,17 +88,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (scheduleData && scheduleData.tournamentName) {
       titleEl.innerText = scheduleData.tournamentName;
     } else {
-      titleEl.innerText = "STEPH KNOCKOUT CUP";
+      titleEl.innerText = "FOOTBALL STEPH LEAGUE";
     }
 
     document.getElementById("loading-state").style.display = "none";
-    document.getElementById("tab-tabellone").style.display = "block";
+    document.getElementById("tab-classifica").style.display = "block";
 
     renderAll();
   } catch (err) {
     console.error("Errore nel caricamento dei dati JSON:", err);
     document.getElementById("loading-state").innerHTML = `
-      <p style="color:#EF4444; font-weight:bold;">Errore nel caricamento dei file JSON dalla cartella data/.</p>
+      <p style="color:#EF4444; font-weight:bold;">
+        Errore nel caricamento dei file JSON dalla cartella data/.
+      </p>
     `;
   }
 });
@@ -104,31 +121,41 @@ function setupMainTabs() {
 }
 
 function renderAll() {
-  renderKnockoutBracket();
+  renderLeagueTable();
+  renderMatchesAndSchedule();
   renderScorers();
   renderTeams();
 }
 
 // ============================================================
-// HELPER DATI
+// HELPER DATI: GIOCATORI, OVR, COLORI & FILTRO PARTITE TORNEO
 // ============================================================
 function getPlayerFromDb(playerId, fallbackName = "Giocatore", fallbackIsGK = false) {
   const found = playersData.find(p => String(p.id) === String(playerId));
   if (found) return found;
-  return { id: String(playerId || ""), name: fallbackName, role: fallbackIsGK ? "POR" : "CEN", stats: {} };
+  return {
+    id: String(playerId || ""),
+    name: fallbackName,
+    role: fallbackIsGK ? "POR" : "CEN",
+    stats: {}
+  };
 }
 
 function computeOVR(player) {
   if (!player || !player.stats || Object.keys(player.stats).length === 0) return 70;
   const role = player.role || "CEN";
   const weights = ROLE_WEIGHTS[role] || ROLE_WEIGHTS.CEN;
-  let sum = 0, totalWeight = 0;
+
+  let sum = 0;
+  let totalWeight = 0;
+
   for (const [statKey, weight] of Object.entries(weights)) {
     const grade = player.stats[statKey] || "B";
     const numericVal = GRADE_VALUES[grade] || 75;
     sum += numericVal * weight;
     totalWeight += weight;
   }
+
   return totalWeight > 0 ? Math.round(sum / totalWeight) : 70;
 }
 
@@ -146,15 +173,13 @@ function colorValToHex(colorValue) {
 }
 
 function findTeamColorHex(teamName, fallbackColorValue) {
-  if (!teamName) return "#475569";
   const t = teamsData.find(x => x.name.trim().toLowerCase() === String(teamName).trim().toLowerCase());
   if (t && t.colorValue) return colorValToHex(t.colorValue);
   if (fallbackColorValue) return colorValToHex(fallbackColorValue);
   return "#3B82F6";
 }
 
-function getTeamColorDot(teamName, fallbackColorValue, isTbd = false) {
-  if (isTbd) return "⚽";
+function getTeamColorDot(teamName, fallbackColorValue) {
   const hex = findTeamColorHex(teamName, fallbackColorValue).toUpperCase();
   if (hex === "#EAB308") return "🟡";
   if (hex === "#EF4444") return "🔴";
@@ -167,310 +192,14 @@ function getTeamColorDot(teamName, fallbackColorValue, isTbd = false) {
   return `<span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:${hex}; vertical-align:middle;"></span>`;
 }
 
+// Filtra rigorosamente le partite del singolo torneo (esclude null e altri tornei)
 function getTournamentMatches() {
   if (!currentTournamentId) return [];
   return matchesData.filter(m => m.tournamentId && String(m.tournamentId).trim() === currentTournamentId);
 }
 
-// Determina chi ha passato il turno in una partita giocata (includendo i calci di rigore)
-function getMatchWinnerAndLoser(matchObj) {
-  if (!matchObj) return { winner: null, loser: null, winnerSide: null };
-  const hTotal = (matchObj.homeScore || 0) + (matchObj.homePenalties || 0);
-  const aTotal = (matchObj.awayScore || 0) + (matchObj.awayPenalties || 0);
-
-  if (hTotal > aTotal) {
-    return { winner: matchObj.homeName, loser: matchObj.awayName, winnerSide: "home" };
-  } else if (aTotal > hTotal) {
-    return { winner: matchObj.awayName, loser: matchObj.homeName, winnerSide: "away" };
-  }
-  return { winner: null, loser: null, winnerSide: null };
-}
-
 // ============================================================
-// 1. MOTORE TABELLONE KNOCKOUT AUTO-AVANZAMENTO
-// ============================================================
-function renderKnockoutBracket() {
-  const container = document.getElementById("bracket-container");
-  const champContainer = document.getElementById("champion-banner-container");
-  container.innerHTML = "";
-  champContainer.innerHTML = "";
-
-  const playedPool = [...getTournamentMatches()].sort((a, b) => String(a.id).localeCompare(String(b.id)));
-  const resolvedNodes = {};
-  let tournamentChampion = null;
-
-  const stages = scheduleData.stages || scheduleData.rounds || [];
-
-  stages.forEach(stage => {
-    const rawTitle = String(stage.stageName || stage.roundName || "");
-    const lowerTitle = rawTitle.toLowerCase();
-
-    // Riconoscimento esatto del turno (esclude Ottavi/Quarti/Sedicesimi di Finale dalla Finalissima!)
-    const isThirdPlace = stage.isThirdPlace === true || lowerTitle.includes("finalina") || lowerTitle.includes("3") || lowerTitle.includes("terzo");
-    const isSemi = !isThirdPlace && (stage.isSemi === true || lowerTitle.includes("semifinal"));
-    const isEarlyRound = lowerTitle.includes("quarti") || lowerTitle.includes("ottavi") || lowerTitle.includes("sedicesimi") || lowerTitle.includes("preliminar");
-    const isFinalStage = !isThirdPlace && !isSemi && !isEarlyRound && (stage.isFinal === true || lowerTitle.includes("finalissima") || lowerTitle.startsWith("finale"));
-
-    let badgeClass = "";
-    let stageIcon = "⚔️";
-    if (isFinalStage) {
-      badgeClass = "final-badge";
-      stageIcon = "🏆";
-    } else if (isSemi) {
-      badgeClass = "semi-badge";
-      stageIcon = "🛡️";
-    } else if (isThirdPlace) {
-      badgeClass = "third-badge";
-      stageIcon = "🎭";
-    }
-
-    const roundBlock = document.createElement("div");
-    roundBlock.className = "round-block";
-    roundBlock.innerHTML = `
-      <div class="round-header">
-        <span class="round-badge ${badgeClass}">
-          ${stageIcon} ${rawTitle}
-        </span>
-      </div>
-    `;
-
-    (stage.matches || []).forEach((slot, idx) => {
-      const code = slot.matchCode || `M_${idx}`;
-      const label = slot.label || code;
-
-      
-      let homeName = slot.homeName || null;
-      let homePlaceholder = "TBD";
-      if (!homeName && slot.homeFromWinner) {
-        const ref = resolvedNodes[slot.homeFromWinner];
-        if (ref && ref.winner) homeName = ref.winner;
-        else homePlaceholder = `Vincente ${slot.homeFromWinner}`;
-      } else if (!homeName && slot.homeFromLoser) {
-        const ref = resolvedNodes[slot.homeFromLoser];
-        if (ref && ref.loser) homeName = ref.loser;
-        else homePlaceholder = `Perdente ${slot.homeFromLoser}`;
-      }
-
-      let awayName = slot.awayName || null;
-      let awayPlaceholder = "TBD";
-      if (!awayName && slot.awayFromWinner) {
-        const ref = resolvedNodes[slot.awayFromWinner];
-        if (ref && ref.winner) awayName = ref.winner;
-        else awayPlaceholder = `Vincente ${slot.awayFromWinner}`;
-      } else if (!awayName && slot.awayFromLoser) {
-        const ref = resolvedNodes[slot.awayFromLoser];
-        if (ref && ref.loser) awayName = ref.loser;
-        else awayPlaceholder = `Perdente ${slot.awayFromLoser}`;
-      }
-
-      // Cerca la partita giocata
-      let matchObj = null;
-      if (homeName && awayName) {
-        const hNorm = homeName.trim().toLowerCase();
-        const aNorm = awayName.trim().toLowerCase();
-
-        const foundIdx = playedPool.findIndex(m => {
-          const mH = m.homeName.trim().toLowerCase();
-          const mA = m.awayName.trim().toLowerCase();
-          return (mH === hNorm && mA === aNorm) || (mH === aNorm && mA === hNorm);
-        });
-
-        if (foundIdx !== -1) {
-          matchObj = playedPool[foundIdx];
-          playedPool.splice(foundIdx, 1);
-        }
-      }
-
-      const outcome = getMatchWinnerAndLoser(matchObj);
-      resolvedNodes[code] = {
-        label: label,
-        winner: outcome.winner,
-        loser: outcome.loser
-      };
-
-      if (isFinalStage && outcome.winner) {
-        tournamentChampion = outcome.winner;
-      }
-
-      const card = buildKnockoutCard({
-        slot,
-        label,
-        isFinalStage,
-        isSemi,
-        isThirdPlace,
-        homeName: homeName || homePlaceholder,
-        awayName: awayName || awayPlaceholder,
-        isHomeTbd: !homeName,
-        isAwayTbd: !awayName,
-        matchObj,
-        outcome
-      });
-
-      roundBlock.appendChild(card);
-    });
-
-    container.appendChild(roundBlock);
-  });
-
-  if (tournamentChampion) {
-    const dot = getTeamColorDot(tournamentChampion, null);
-    champContainer.innerHTML = `
-      <div class="champion-banner">
-        <div class="trophy-icon">🏆</div>
-        <div class="champ-label">CAMPIONE DEL TORNEO</div>
-        <div class="champ-team">${dot} ${tournamentChampion.toUpperCase()}</div>
-      </div>
-    `;
-  }
-}
-
-function buildKnockoutCard(info) {
-  const { slot, label, isFinalStage, isSemi, isThirdPlace, homeName, awayName, isHomeTbd, isAwayTbd, matchObj, outcome } = info;
-  const isPlayed = matchObj !== null;
-
-  let cardExtraClass = "";
-  if (isFinalStage) cardExtraClass = "final-match-card";
-  else if (isSemi) cardExtraClass = "semi-match-card";
-  else if (isThirdPlace) cardExtraClass = "third-match-card";
-
-  const card = document.createElement("div");
-  card.className = `match-card ${cardExtraClass}`;
-
-  if (isPlayed) {
-    const hasPens = (matchObj.homePenalties || 0) > 0 || (matchObj.awayPenalties || 0) > 0;
-    const hDot = getTeamColorDot(matchObj.homeName, matchObj.homeColorValue);
-    const aDot = getTeamColorDot(matchObj.awayName, matchObj.awayColorValue);
-
-    const homePassed = outcome.winnerSide === "home";
-    const awayPassed = outcome.winnerSide === "away";
-
-    const homeClass = homePassed ? "team-Qualified" : (awayPassed ? "team-Eliminated" : "");
-    const awayClass = awayPassed ? "team-Qualified" : (homePassed ? "team-Eliminated" : "");
-
-    const crownIcon = isFinalStage ? "🏆" : (isThirdPlace ? "🎭" : "👑");
-
-    card.innerHTML = `
-      <div class="match-meta-row">
-        <span><strong style="color:#E2E8F0;">${label}</strong> • 🗓️ ${matchObj.date || slot.scheduledDate || ""}</span>
-        <span class="status-pill status-played">FINALE</span>
-      </div>
-      <div class="match-score-row">
-        <div class="match-team-home ${homeClass}">
-          ${homePassed ? `<span class="qual-crown">${crownIcon}</span>` : ""}
-          ${matchObj.homeName} ${hDot}
-        </div>
-        <div class="match-center-score">
-          <span class="score-text">${matchObj.homeScore} - ${matchObj.awayScore}</span>
-          ${hasPens ? `<span class="penalties-sub">(${matchObj.homePenalties}-${matchObj.awayPenalties} dcr)</span>` : ""}
-        </div>
-        <div class="match-team-away ${awayClass}">
-          ${aDot} ${matchObj.awayName}
-          ${awayPassed ? `<span class="qual-crown">${crownIcon}</span>` : ""}
-        </div>
-      </div>
-      ${slot.locationName ? `<div class="match-location-sub">📍 ${slot.locationName}</div>` : ""}
-    `;
-    card.onclick = () => openPlayedMatchModal(matchObj, slot);
-  } else {
-    const hDot = getTeamColorDot(homeName, null, isHomeTbd);
-    const aDot = getTeamColorDot(awayName, null, isAwayTbd);
-
-    card.innerHTML = `
-      <div class="match-meta-row">
-        <span><strong style="color:#E2E8F0;">${label}</strong> • 🕒 ${slot.scheduledDate || "Data da definire"}</span>
-        <span class="status-pill status-scheduled">DA GIOCARE</span>
-      </div>
-      <div class="match-score-row">
-        <div class="match-team-home ${isHomeTbd ? "tbd-team" : ""}">${homeName} ${hDot}</div>
-        <div class="match-center-score">
-          <span class="score-dash">- : -</span>
-        </div>
-        <div class="match-team-away ${isAwayTbd ? "tbd-team" : ""}">${aDot} ${awayName}</div>
-      </div>
-      ${slot.locationName ? `<div class="match-location-sub">📍 ${slot.locationName}</div>` : ""}
-    `;
-    card.onclick = () => openScheduledMatchModal({
-      ...slot,
-      homeName: homeName,
-      awayName: awayName
-    });
-  }
-
-  return card;
-}
-
-function buildKnockoutCard(info) {
-  const { slot, label, isFinalStage, homeName, awayName, isHomeTbd, isAwayTbd, matchObj, outcome } = info;
-  const isPlayed = matchObj !== null;
-
-  const card = document.createElement("div");
-  card.className = `match-card ${isFinalStage ? "final-match-card" : ""}`;
-
-  if (isPlayed) {
-    const hasPens = (matchObj.homePenalties || 0) > 0 || (matchObj.awayPenalties || 0) > 0;
-    const hDot = getTeamColorDot(matchObj.homeName, matchObj.homeColorValue);
-    const aDot = getTeamColorDot(matchObj.awayName, matchObj.awayColorValue);
-
-    const homePassed = outcome.winnerSide === "home";
-    const awayPassed = outcome.winnerSide === "away";
-
-    const homeClass = homePassed ? "team-Qualified" : (awayPassed ? "team-Eliminated" : "");
-    const awayClass = awayPassed ? "team-Qualified" : (homePassed ? "team-Eliminated" : "");
-
-    const crownIcon = isFinalStage ? "🏆" : "👑";
-
-    card.innerHTML = `
-      <div class="match-meta-row">
-        <span><strong style="color:#E2E8F0;">${label}</strong> • 🗓️ ${matchObj.date || slot.scheduledDate || ""}</span>
-        <span class="status-pill status-played">FINALE</span>
-      </div>
-      <div class="match-score-row">
-        <div class="match-team-home ${homeClass}">
-          ${homePassed ? `<span class="qual-crown">${crownIcon}</span>` : ""}
-          ${matchObj.homeName} ${hDot}
-        </div>
-        <div class="match-center-score">
-          <span class="score-text">${matchObj.homeScore} - ${matchObj.awayScore}</span>
-          ${hasPens ? `<span class="penalties-sub">(${matchObj.homePenalties}-${matchObj.awayPenalties} dcr)</span>` : ""}
-        </div>
-        <div class="match-team-away ${awayClass}">
-          ${aDot} ${matchObj.awayName}
-          ${awayPassed ? `<span class="qual-crown">${crownIcon}</span>` : ""}
-        </div>
-      </div>
-      ${slot.locationName ? `<div class="match-location-sub">📍 ${slot.locationName}</div>` : ""}
-    `;
-    card.onclick = () => openPlayedMatchModal(matchObj, slot);
-  } else {
-    const hDot = getTeamColorDot(homeName, null, isHomeTbd);
-    const aDot = getTeamColorDot(awayName, null, isAwayTbd);
-
-    card.innerHTML = `
-      <div class="match-meta-row">
-        <span><strong style="color:#E2E8F0;">${label}</strong> • 🕒 ${slot.scheduledDate || "Data da definire"}</span>
-        <span class="status-pill status-scheduled">DA GIOCARE</span>
-      </div>
-      <div class="match-score-row">
-        <div class="match-team-home ${isHomeTbd ? "tbd-team" : ""}">${homeName} ${hDot}</div>
-        <div class="match-center-score">
-          <span class="score-dash">- : -</span>
-        </div>
-        <div class="match-team-away ${isAwayTbd ? "tbd-team" : ""}">${aDot} ${awayName}</div>
-      </div>
-      ${slot.locationName ? `<div class="match-location-sub">📍 ${slot.locationName}</div>` : ""}
-    `;
-    card.onclick = () => openScheduledMatchModal({
-      ...slot,
-      homeName: homeName,
-      awayName: awayName
-    });
-  }
-
-  return card;
-}
-
-// ============================================================
-// ALGORITMO CALCOLO PAGELLINI & MVP (IDENTICO A HISTORY_SCREEN.DART)
+// ALGORITMO CALCOLO PAGELLINI & MVP
 // ============================================================
 function calculateMatchRatings(m) {
   const ratings = {};
@@ -495,7 +224,7 @@ function calculateMatchRatings(m) {
           errors = 0, bigMisses = 0, bigCreated = 0, goodPlays = 0;
 
       (m.events || []).forEach(e => {
-        if (e.isPenalty) return;
+        if (e.isPenalty) return; // Ignora la lotteria dei rigori finale
 
         if (String(e.playerId) === playerId) {
           if (e.type === "GOL" || e.type === "RIGORE_SEGNATO") goals++;
@@ -523,6 +252,7 @@ function calculateMatchRatings(m) {
       const hasAction = (goals > 0 || assists > 0 || yellows > 0 || reds > 0 || penSaved > 0 || penMissed > 0 || ownGoals > 0 || goalsConceded > 0);
       const playedEnough = (p.playedSeconds || 0) >= 300;
 
+      // Assegnazione SV se meno di 5 minuti (300s) e nessuna azione principale
       if (!hasAction && !playedEnough) {
         ratings[playerId] = "SV";
         return;
@@ -562,6 +292,7 @@ function calculateMatchRatings(m) {
         playedSeconds: p.playedSeconds || 0
       };
 
+      // Logica Tie-Breaker MVP identica a Flutter
       if (score > maxScore) {
         maxScore = score;
         currentMvp = pData;
@@ -600,6 +331,221 @@ function calculateMatchRatings(m) {
 
   const mvpId = (currentMvp !== null && !isDrawMvp) ? currentMvp.id : null;
   return { ratings, mvpId };
+}
+
+// ============================================================
+// 1. TAB CLASSIFICA (SOLO SQUADRE DI TEAMS.JSON + PARTITE TORNEO)
+// ============================================================
+function renderLeagueTable() {
+  const tbody = document.getElementById("league-table-body");
+  tbody.innerHTML = "";
+
+  const tourMatches = getTournamentMatches();
+  const stats = {};
+
+  // Inizializza le squadre ufficiali da teams.json
+  teamsData.forEach(t => {
+    stats[t.name] = {
+      name: t.name,
+      colorValue: t.colorValue,
+      pt: 0, g: 0, v: 0, n: 0, s: 0, gf: 0, gs: 0, dr: 0
+    };
+  });
+
+  // Aggiorna i dati con i match giocati nel torneo
+  tourMatches.forEach(m => {
+    if (!stats[m.homeName]) {
+      stats[m.homeName] = { name: m.homeName, colorValue: m.homeColorValue, pt: 0, g: 0, v: 0, n: 0, s: 0, gf: 0, gs: 0, dr: 0 };
+    }
+    if (!stats[m.awayName]) {
+      stats[m.awayName] = { name: m.awayName, colorValue: m.awayColorValue, pt: 0, g: 0, v: 0, n: 0, s: 0, gf: 0, gs: 0, dr: 0 };
+    }
+
+    const h = stats[m.homeName];
+    const a = stats[m.awayName];
+
+    h.g++;
+    a.g++;
+    h.gf += m.homeScore;
+    h.gs += m.awayScore;
+    a.gf += m.awayScore;
+    a.gs += m.homeScore;
+
+    if (m.homeScore > m.awayScore) {
+      h.v++; h.pt += 3; a.s++;
+    } else if (m.homeScore < m.awayScore) {
+      a.v++; a.pt += 3; h.s++;
+    } else {
+      h.n++; h.pt += 1;
+      a.n++; a.pt += 1;
+    }
+  });
+
+  Object.values(stats).forEach(s => {
+    s.dr = s.gf - s.gs;
+  });
+
+  const sorted = Object.values(stats).sort((a, b) => {
+    if (b.pt !== a.pt) return b.pt - a.pt;
+    if (b.dr !== a.dr) return b.dr - a.dr;
+    if (b.gf !== a.gf) return b.gf - a.gf;
+
+    // Scontro Diretto
+    const h2h = tourMatches.filter(m =>
+      (m.homeName === a.name && m.awayName === b.name) ||
+      (m.homeName === b.name && m.awayName === a.name)
+    );
+    let ptsA = 0, ptsB = 0;
+    h2h.forEach(m => {
+      if (m.homeName === a.name) {
+        if (m.homeScore > m.awayScore) ptsA += 3;
+        else if (m.homeScore < m.awayScore) ptsB += 3;
+        else { ptsA++; ptsB++; }
+      } else {
+        if (m.homeScore > m.awayScore) ptsB += 3;
+        else if (m.homeScore < m.awayScore) ptsA += 3;
+        else { ptsA++; ptsB++; }
+      }
+    });
+    if (ptsB !== ptsA) return ptsB - ptsA;
+
+    return a.name.localeCompare(b.name);
+  });
+
+  sorted.forEach((row, idx) => {
+    const hex = findTeamColorHex(row.name, row.colorValue);
+    const drColor = row.dr > 0 ? "#10B981" : (row.dr < 0 ? "#EF4444" : "#94A3B8");
+    const drText = row.dr > 0 ? `+${row.dr}` : `${row.dr}`;
+
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td class="col-pos">${idx + 1}</td>
+      <td class="col-team">
+        <div class="team-cell">
+          <span class="color-bar" style="background:${hex};"></span>
+          <span>${row.name}</span>
+        </div>
+      </td>
+      <td class="col-pt">${row.pt}</td>
+      <td>${row.g}</td>
+      <td>${row.v}</td>
+      <td>${row.n}</td>
+      <td>${row.s}</td>
+      <td>${row.gf}</td>
+      <td>${row.gs}</td>
+      <td style="color:${drColor}; font-weight:700;">${drText}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+// ============================================================
+// 2. TAB CALENDARIO
+// ============================================================
+function renderMatchesAndSchedule() {
+  const container = document.getElementById("matches-container");
+  container.innerHTML = "";
+
+  const playedPool = [...getTournamentMatches()].sort((a, b) => String(a.id).localeCompare(String(b.id)));
+
+  if (scheduleData && Array.isArray(scheduleData.rounds) && scheduleData.rounds.length > 0) {
+    scheduleData.rounds.forEach(round => {
+      const roundBlock = document.createElement("div");
+      roundBlock.className = "round-block";
+      roundBlock.innerHTML = `
+        <div class="round-header">
+          <span class="round-badge">📅 ${round.roundName}</span>
+        </div>
+      `;
+
+      (round.matches || []).forEach(sched => {
+        const matchIdx = playedPool.findIndex(m =>
+          m.homeName.trim().toLowerCase() === sched.homeName.trim().toLowerCase() &&
+          m.awayName.trim().toLowerCase() === sched.awayName.trim().toLowerCase()
+        );
+
+        let matchObj = null;
+        if (matchIdx !== -1) {
+          matchObj = playedPool[matchIdx];
+          playedPool.splice(matchIdx, 1);
+        }
+
+        const card = buildMatchCard(sched, matchObj);
+        roundBlock.appendChild(card);
+      });
+
+      container.appendChild(roundBlock);
+    });
+  }
+
+  if (playedPool.length > 0) {
+    const extraBlock = document.createElement("div");
+    extraBlock.className = "round-block";
+    extraBlock.innerHTML = `
+      <div class="round-header">
+        <span class="round-badge">⚽ Altre Partite Torneo</span>
+      </div>
+    `;
+
+    playedPool.reverse().forEach(m => {
+      const card = buildMatchCard(null, m);
+      extraBlock.appendChild(card);
+    });
+
+    container.appendChild(extraBlock);
+  }
+}
+
+function buildMatchCard(sched, matchObj) {
+  const isPlayed = matchObj !== null;
+  const homeName = isPlayed ? matchObj.homeName : sched.homeName;
+  const awayName = isPlayed ? matchObj.awayName : sched.awayName;
+
+  const homeDot = getTeamColorDot(homeName, isPlayed ? matchObj.homeColorValue : null);
+  const awayDot = getTeamColorDot(awayName, isPlayed ? matchObj.awayColorValue : null);
+
+  const card = document.createElement("div");
+  card.className = "match-card";
+
+  if (isPlayed) {
+    const hasPens = (matchObj.homePenalties || 0) > 0 || (matchObj.awayPenalties || 0) > 0;
+    const dateLabel = matchObj.date || (sched ? sched.scheduledDate : "");
+
+    card.innerHTML = `
+      <div class="match-meta-row">
+        <span>🗓️ ${dateLabel}</span>
+        <span class="status-pill status-played">FINALE</span>
+      </div>
+      <div class="match-score-row">
+        <div class="match-team-home">${homeName} ${homeDot}</div>
+        <div class="match-center-score">
+          <span class="score-text">${matchObj.homeScore} - ${matchObj.awayScore}</span>
+          ${hasPens ? `<span class="penalties-sub">(${matchObj.homePenalties}-${matchObj.awayPenalties} dcr)</span>` : ""}
+        </div>
+        <div class="match-team-away">${awayDot} ${awayName}</div>
+      </div>
+      ${sched && sched.locationName ? `<div class="match-location-sub">📍 ${sched.locationName}</div>` : ""}
+    `;
+    card.onclick = () => openPlayedMatchModal(matchObj, sched);
+  } else {
+    card.innerHTML = `
+      <div class="match-meta-row">
+        <span>🕒 ${sched.scheduledDate || "Data da definire"}</span>
+        <span class="status-pill status-scheduled">DA GIOCARE</span>
+      </div>
+      <div class="match-score-row">
+        <div class="match-team-home">${homeName} ${homeDot}</div>
+        <div class="match-center-score">
+          <span class="score-dash">- : -</span>
+        </div>
+        <div class="match-team-away">${awayDot} ${awayName}</div>
+      </div>
+      ${sched.locationName ? `<div class="match-location-sub">📍 ${sched.locationName}</div>` : ""}
+    `;
+    card.onclick = () => openScheduledMatchModal(sched);
+  }
+
+  return card;
 }
 
 // ============================================================
@@ -658,6 +604,7 @@ function openPlayedMatchModal(m, sched) {
   `;
 
   document.getElementById("modal-scheduled-view").style.display = "none";
+  // Importante: usa "flex" per mantenere lo scroll interno funzionante!
   document.getElementById("modal-played-view").style.display = "flex";
 
   renderMatchCronaca(m);
@@ -688,12 +635,11 @@ function switchMatchModalTab(tabName) {
 
 function getEventPeriodLabel(e) {
   const min = String(e.minute || "").toUpperCase();
-  if (min.includes("1°TS")) return "1° TEMPO SUPPLEMENTARE";
+  if (min.includes("RIGORI") || e.isPenalty) return "SEQUENZA CALCI DI RIGORE";
   if (min.includes("2°TS")) return "2° TEMPO SUPPLEMENTARE";
-  if (min.includes("1° T") || min.includes("1°T")) return "1° TEMPO";
-  if (min.includes("2° T") || min.includes("2°T")) return "2° TEMPO";
-  if (min.includes("RIGOR") || min.includes("RIG") || e.isPenalty) return "CALCI DI RIGORE";
-  return "";
+  if (min.includes("1°TS")) return "1° TEMPO SUPPLEMENTARE";
+  if (min.includes("2° T")) return "2° TEMPO";
+  return "1° TEMPO";
 }
 
 function renderMatchCronaca(m) {
@@ -727,6 +673,7 @@ function renderMatchCronaca(m) {
     const row = document.createElement("div");
     row.className = `event-row ${sideClass}`;
 
+    // Badge: numero progressivo per squadra nei rigori, altrimenti solo MM:SS
     let badgeText = "";
     if (e.isPenalty || period === "CALCI DI RIGORE") {
       if (e.team === "home") {
@@ -742,6 +689,7 @@ function renderMatchCronaca(m) {
         .trim();
     }
 
+    // Rimuove "Squadra: NomeSquadra" lasciando solo Assist o info sostituzione
     const cleanSub = String(e.sub || "")
       .replace(/Squadra:\s*[^•\n]+(•\s*)?/gi, "")
       .trim();
@@ -769,6 +717,9 @@ function renderMatchPagelle(m) {
     box.style = "background:#111827; border:1px solid #1E293B; border-radius:12px; padding:12px; margin-bottom:12px;";
 
     let sum = 0, count = 0;
+    let benchDividerAdded = false;
+    const sortedRoster = [...(roster || [])].sort((a, b) => (b.inField !== false ? 1 : 0) - (a.inField !== false ? 1 : 0));
+    
     (roster || []).forEach(p => {
       const v = ratings[String(p.dbId)];
       if (typeof v === "number" && v > 0) {
@@ -785,8 +736,6 @@ function renderMatchPagelle(m) {
       </div>
     `;
 
-    let benchDividerAdded = false;
-    const sortedRoster = [...(roster || [])].sort((a, b) => (b.inField !== false ? 1 : 0) - (a.inField !== false ? 1 : 0));
 
     sortedRoster.forEach(p => {
       if (p.inField === false && !benchDividerAdded) {
@@ -799,7 +748,7 @@ function renderMatchPagelle(m) {
       const isSV = vote === "SV";
       const isMvp = !isSV && String(p.dbId) === String(mvpId);
 
-      let badgeColor = "#334155";
+      let badgeColor = "#334155"; // Grigio per SV
       if (isMvp) {
         badgeColor = "#0044FF";
       } else if (!isSV) {
@@ -835,7 +784,7 @@ function closeMatchModal() {
 }
 
 // ============================================================
-// 2. TAB MARCATORI
+// 3. TAB MARCATORI (TUTTI I GIOCATORI DELLE SQUADRE DEL TORNEO)
 // ============================================================
 function renderScorers() {
   const tbody = document.getElementById("scorers-table-body");
@@ -850,6 +799,7 @@ function renderScorers() {
     }
   };
 
+  // 1. Pre-carica TUTTI i giocatori delle squadre iscritte (anche con 0 gol e 0 assist)
   teamsData.forEach(team => {
     (team.roster || []).forEach(entry => {
       const dbP = getPlayerFromDb(entry.playerId);
@@ -859,12 +809,14 @@ function renderScorers() {
     });
   });
 
+  // 2. Somma Gol e Assist delle partite del torneo
   tourMatches.forEach(m => {
     const allMatchPlayers = [
       ...(m.homeRoster || []).map(p => ({ ...p, teamName: m.homeName })),
       ...(m.awayRoster || []).map(p => ({ ...p, teamName: m.awayName }))
     ];
 
+    // Assicura che anche eventuali giocatori presenti in distinta ma non in teams.json siano registrati
     allMatchPlayers.forEach(mp => {
       ensureEntry(String(mp.dbId), mp.name, mp.teamName);
     });
@@ -897,6 +849,7 @@ function renderScorers() {
     });
   });
 
+  // Ordina: 1. Gol decrescente -> 2. Assist decrescente -> 3. Alfabetico
   const sorted = Object.values(scorersMap).sort((a, b) => {
     if (b.gol !== a.gol) return b.gol - a.gol;
     if (b.assist !== a.assist) return b.assist - a.assist;
@@ -924,7 +877,7 @@ function renderScorers() {
 }
 
 // ============================================================
-// 3. TAB SQUADRE & SCHEDA ATLETA
+// 4. TAB SQUADRE (ORDINATE SOLO PER RUOLO POR->DIF->CEN->ATT E OVR)
 // ============================================================
 function renderTeams() {
   const container = document.getElementById("teams-container");
@@ -950,6 +903,7 @@ function renderTeams() {
       };
     });
 
+    // Ordina TUTTI i giocatori esclusivamente per Ruolo (POR, DIF, CEN, ATT) e a parità di ruolo per OVR decrescente
     enrichedRoster.sort((a, b) => {
       const rA = roleOrder[a.role] ?? 99;
       const rB = roleOrder[b.role] ?? 99;
@@ -1018,6 +972,9 @@ function renderTeams() {
   });
 }
 
+// ============================================================
+// MODALE SCHEDA ATLETA (CON AMMONIZIONI / ESPULSIONI E TESTI BIANCHI)
+// ============================================================
 function openPlayerModal(player, teamName) {
   const tier = getTierInfo(player.ovr);
   const statDefs = player.role === "POR" ? STAT_LABELS_POR : STAT_LABELS_MOV;
@@ -1066,7 +1023,7 @@ function openPlayerModal(player, teamName) {
         assist++;
       }
     });
-    });
+  });
 
   const mediaVoto = countVoti > 0 ? (sumVoti / countVoti).toFixed(2) : "--";
 
